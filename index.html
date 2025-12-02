@@ -5,20 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Omar Boukantar | Portfolio</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      font-family: "Inter", sans-serif;
+    /* Customizing the fonts to match the target style */
+    .font-serif-display {
+      font-family: 'Playfair Display', serif;
+    }
+    .font-sans-inter { /* Poppins is now the clean sans-serif body font */
+      font-family: 'Poppins', sans-serif;
     }
     html {
       scroll-behavior: smooth;
     }
-
     /* Fade-in animation */
     .fade-in-element {
       opacity: 0;
@@ -29,490 +32,567 @@
       opacity: 1;
       transform: translateY(0);
     }
+    
+    /* GRADIENT BLOB SETUP: Creating the soft halo spots */
+    .gradient-blobs {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        z-index: -2; /* Placed behind the main content */
+    }
+    .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px); /* Heavy blur for soft edges */
+        opacity: 0.4;
+    }
+    /* Specific Blob Styles (Subtle blue/pink wash) */
+    .blob-1 {
+        width: 400px;
+        height: 400px;
+        background-color: rgba(144, 202, 249, 0.5); /* Soft Blue */
+        top: -150px;
+        left: -150px;
+    }
+    .blob-2 {
+        width: 300px;
+        height: 300px;
+        background-color: rgba(255, 193, 219, 0.5); /* Soft Pink/Purple */
+        top: 50px;
+        right: 0px;
+    }
+    .blob-3 {
+        width: 200px;
+        height: 200px;
+        background-color: rgba(169, 230, 240, 0.5); /* Soft Teal */
+        bottom: -50px;
+        left: 30%;
+    }
+
+    /* Style for the Google Translate widget to hide the default toolbar */
+    #google_translate_element {
+        display: none;
+    }
+    .goog-te-banner-frame {
+        display: none !important;
+    }
+    body { top: 0 !important; }
+    
+    /* TOOL ICON STYLES WITH HOVER EFFECT (BORDERS REMOVED/MINIMIZED) */
+    .tool-icon-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: default;
+        border: 1px solid transparent; /* Set initial border to transparent */
+        background-color: transparent; /* Set initial background to transparent */
+    }
+    .tool-icon-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        border-color: #e5e7eb; /* Light border on hover for subtle lift */
+        background-color: #ffffff; /* White background on hover */
+    }
   </style>
 </head>
 
-<body class="relative min-h-screen bg-slate-50 text-slate-900 overflow-x-hidden">
+<body class="bg-white text-gray-800 font-sans-inter antialiased">
 
-  <!-- SOFT BACKGROUND BLOBS -->
-  <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-    <div class="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-purple-200/50 blur-3xl"></div>
-    <div class="absolute top-40 right-[-8rem] h-96 w-96 rounded-full bg-indigo-200/50 blur-3xl"></div>
-    <div class="absolute bottom-[-10rem] left-10 h-96 w-96 rounded-full bg-sky-200/50 blur-3xl"></div>
-  </div>
-
-  <!-- NAVBAR -->
-  <header id="header-nav" class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200">
-    <nav class="container mx-auto flex items-center justify-between px-4 py-4">
-      <div class="flex items-center gap-2">
-        <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-        <span class="text-sm font-semibold tracking-wide text-slate-900 uppercase">
+  <div class="border-b border-gray-100/50 relative bg-white"> 
+    
+    <div class="gradient-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    
+    <header id="header-nav" class="sticky top-0 z-40 bg-white/90 backdrop-blur-sm border-b border-gray-100">
+      <nav class="container mx-auto flex items-center justify-between px-4 py-4 max-w-4xl">
+        <div class="text-sm font-semibold tracking-wider uppercase text-gray-800">
           Omar Boukantar
-        </span>
+        </div>
+        
+        <div class="hidden space-x-6 text-sm font-medium text-gray-600 md:flex">
+          <a href="#home" class="hover:text-black transition">Home</a>
+          <a href="#about" class="hover:text-black transition">About Me</a>
+          <a href="#experience" class="hover:text-black transition">Experience</a>
+          <a href="#projects" class="hover:text-black transition">My Projects</a>
+          <a href="#contact" class="hover:text-black transition">Contact Me</a>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <button 
+            id="translate-button" 
+            class="rounded-full border border-gray-400 px-4 py-1.5 text-xs font-medium text-gray-700 hover:border-black hover:text-black transition flex items-center gap-1"
+            onclick="toggleTranslateMenu()"
+          >
+            Translate 🌐
+          </button>
+          
+          <a
+            href="#contact"
+            class="hidden md:flex items-center gap-1 rounded-full border border-gray-400 px-4 py-1.5 text-xs font-medium text-gray-700 hover:border-black hover:text-black transition"
+          >
+            Contact <span aria-hidden="true">&#8599;</span>
+          </a>
+        </div>
+      </nav>
+      
+      <div id="translate-menu" class="absolute right-4 md:right-auto md:left-auto top-14 z-50 bg-white border border-gray-200 rounded-lg shadow-xl py-2 hidden">
+        <button onclick="translatePage('de')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Deutsch (German)</button>
+        <button onclick="translatePage('ru')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Русский (Russian)</button>
+        <button onclick="translatePage('en')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t mt-1 pt-1">English (Original)</button>
+        <div id="google_translate_element"></div>
       </div>
-      <div class="hidden space-x-6 text-sm font-medium text-slate-600 md:flex">
-        <a href="#home" class="hover:text-indigo-500 transition">Home</a>
-        <a href="#about" class="hover:text-indigo-500 transition">About Me</a>
-        <a href="#experience" class="hover:text-indigo-500 transition">Experience</a>
-        <a href="#projects" class="hover:text-indigo-500 transition">My Projects</a>
-        <a href="#contact" class="hover:text-indigo-500 transition">Contact Me</a>
-      </div>
-      <a
-        href="#contact"
-        class="rounded-full border border-indigo-400/70 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-700 shadow-sm hover:bg-indigo-500/20 transition"
-      >
-        Contact
-      </a>
-    </nav>
-  </header>
+    </header>
 
-  <main class="container mx-auto px-4 pb-16">
-
-    <!-- HERO / HOME -->
-    <section id="home" class="flex min-h-[70vh] flex-col items-center justify-center gap-10 pt-10 md:flex-row md:justify-between">
-      <!-- Left text -->
-      <div class="max-w-xl fade-in-element">
-        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-500">
+    <section id="home" class="fade-in-element container mx-auto flex min-h-[70vh] flex-col-reverse items-center justify-center gap-10 px-4 py-16 md:flex-row md:justify-between max-w-4xl relative z-10">
+      
+      <div class="max-w-xl text-center md:text-left">
+        <p class="text-md font-bold text-gray-700 mb-4 uppercase tracking-[0.1em]">
           Hi! I'm Omar
         </p>
-        <h1 class="mt-3 text-3xl font-bold text-slate-2000 sm:text-4xl md:text-5xl">
+        
+        <h1 class="mt-3 text-3xl font-normal text-gray-900 sm:text-4xl md:text-5xl font-serif-display leading-tight">
           Undergraduate ML Researcher & Software Developer based in Massachusetts.
         </h1>
-        <p class="mt-4 text-base text-slate-600">
+
+        <p class="mt-4 text-base text-gray-700">
           Honors CS at UMass Amherst pursuing my love for software and AI, working on Machine Learning Models for
           my research lab — while also bodybuilding and learning Russian.
         </p>
-        <div class="mt-6 flex flex-wrap items-center gap-3">
+
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-4 md:justify-start">
           <a
             href="#contact"
-            class="rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 transition"
+            class="rounded-full bg-black px-10 py-4 text-xl font-medium text-white shadow-md hover:bg-gray-700 transition flex items-center gap-3"
           >
-            Contact Me
+            Contact me <span aria-hidden="true">&#8594;</span>
           </a>
+          
           <a
             href="https://www.linkedin.com/in/omar-boukantar-72a529380/"
             target="_blank"
-            class="rounded-full border border-slate-300 px-5 py-2 text-sm font-semibold text-slate-700 hover:border-indigo-400 hover:text-indigo-500 transition"
+            class="rounded-full border border-gray-400 px-10 py-4 text-xl font-medium text-gray-700 hover:border-black hover:text-black transition flex items-center gap-3"
           >
-            LinkedIn
+            LinkedIn <span aria-hidden="true">&#8600;</span>
           </a>
         </div>
       </div>
 
-      <!-- Right image -->
-      <div class="fade-in-element">
-        <div class="relative flex items-center justify-center">
-          <div class="absolute h-44 w-44 rounded-full bg-indigo-200/70 blur-2xl"></div>
-          <img
-            src="IMG_3129.jpeg"
-            alt="Omar portrait"
-            class="relative h-40 w-40 rounded-full border border-slate-200 object-cover shadow-xl md:h-48 md:w-48 bg-white"
-          />
-        </div>
+      <div class="flex-shrink-0 mb-8 md:mb-0">
+        <img
+          src="IMG_3129.jpeg"
+          alt="Omar portrait"
+          class="h-44 w-44 rounded-full border-4 border-white object-cover shadow-2xl md:h-56 md:w-56"
+        />
       </div>
     </section>
+  </div>
 
-    <!-- INTRO / ABOUT SECTION -->
-    <section id="about" class="mt-16 fade-in-element">
-      <p class="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-500">
+  <main class="container mx-auto px-4 pb-16"> 
+
+    <hr class="border-t border-gray-100 my-12" />
+
+    <section id="about" class="fade-in-element pt-16 pb-16"> 
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">
         Introduction
       </p>
-      <h2 class="mt-2 text-3xl font-bold text-slate-900">
+      <h2 class="text-3xl font-normal text-gray-900 text-center font-serif-display mb-12">
         About Me
       </h2>
 
-      <div class="mt-6 grid gap-8 md:grid-cols-[2fr,1fr]">
-        <!-- Main about text -->
-        <div class="rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm">
-          <p class="text-sm text-slate-700">
-            I'm an <span class="font-semibold text-indigo-600">Honors Computer Science student at UMass Amherst</span>,
-            with a passion in AI-integrated software and research-driven ML tooling.
-            I care a lot about building systems that are fast, reliable, and genuinely useful for people.
-          </p>
-          <p class="mt-3 text-sm text-slate-700">
-            Right now, I'm working in the <span class="font-semibold text-indigo-600">Laboratory for Advanced System Software</span>,
-            extending the FMTK toolkit for classification, anomaly detection, forecasting, and more — aiming to make TSFM workflows
-            usable in just a few lines of code.
-          </p>
-          <p class="mt-3 text-sm text-slate-700">
-            Outside of code and research, I'm serious about <span class="font-semibold text-emerald-600">bodybuilding and fitness</span>,
-            and I'm also studying <span class="font-semibold text-indigo-600">Russian</span> as a second major. Building discipline in the gym
-            and in language learning go hand in hand with my passionate approach to my work.
-          </p>
+      <div class="grid md:grid-cols-2 gap-12 mx-auto">
+        
+        <div class="space-y-5 text-gray-700 text-base leading-relaxed">
+          <p>
+              I'm an <span class="font-semibold text-gray-900">Honors Computer Science student at UMass Amherst</span>,
+              with a passion in AI-integrated software and research-driven ML tooling.
+              I care a lot about building systems that are fast, reliable, and genuinely useful for people.
+            </p>
+            <p>
+              Right now, I'm working in the <span class="font-semibold text-gray-900">Laboratory for Advanced System Software</span>,
+              extending the FMTK toolkit for classification, anomaly detection, forecasting, and more — aiming to make TSFM workflows
+              usable in just a few lines of code.
+            </p>
+            <p>
+              Outside of code and research, I'm serious about <span class="font-semibold text-gray-900">bodybuilding and fitness</span>,
+              and I'm also studying <span class="font-semibold text-gray-900">Russian</span> as a second major. Building discipline in the gym
+              and in language learning go hand in hand with my passionate approach to my work.
+            </p>
         </div>
 
-        <!-- Side mini cards -->
-        <div class="space-y-4">
-          <div class="rounded-xl border border-slate-200 bg-white/90 p-4 shadow-sm">
-            <h3 class="flex items-center gap-2 text-sm font-semibold text-slate-900">
-              <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-              Languages & Tools
-            </h3>
-            <p class="mt-2 text-xs text-slate-700">
-              Python, JavaScript, TypeScript, C, C#, C++, Java, SQL, HTML/CSS, React, Docker, AWS, Azure, GitHub.
-            </p>
+        <div class="pt-2">
+          
+          <h3 class="text-lg font-medium text-gray-900 mb-4 border-b border-gray-100 pb-2 text-center md:text-left">
+            Skills & Technologies
+          </h3>
+          <div class="flex flex-wrap gap-3 text-sm text-gray-600 mb-8">
+            <span class="border border-gray-200 px-3 py-1 rounded-full bg-gray-50">Python</span>
+            <span class="border border-gray-200 px-3 py-1 rounded-full bg-gray-50">TypeScript</span>
+            <span class="border border-gray-200 px-3 py-1 rounded-full bg-gray-50">React</span>
+            <span class="border border-gray-200 px-3 py-1 rounded-full bg-gray-50">PyTorch</span>
+            <span class="border border-gray-200 px-3 py-1 rounded-full bg-gray-50">LangChain</span>
+            <span class="border border-gray-200 px-3 py-1 rounded-full bg-gray-50">AWS Cloud Services</span>
+            <span class="border border-gray-200 px-3 py-1 rounded-full bg-gray-50">Docker</span>
+            <span class="border border-gray-200 px-3 py-1 rounded-full bg-gray-50">Time-Series Foundation Models</span>
+            <span class="border border-gray-200 px-3 py-1 rounded-full bg-gray-50">C/C++</span>
           </div>
+          
+          <h3 class="text-lg font-medium text-gray-900 mb-6 border-b border-gray-100 pb-2 text-center md:text-left">
+            Tools I Use
+          </h3>
+          <div class="flex flex-wrap justify-center gap-4 md:justify-start">
+            
+            <div class="tool-icon-card p-2 text-center w-20">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" alt="VS Code Icon" class="w-10 h-10 mx-auto mb-1">
+              <p class="text-xs text-gray-600">VS Code</p>
+            </div>
+            
+            <div class="tool-icon-card p-2 text-center w-20">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS Icon" class="w-10 h-10 mx-auto mb-1">
+              <p class="text-xs text-gray-600">AWS</p>
+            </div>
+            
+            <div class="tool-icon-card p-2 text-center w-20">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub Icon" class="w-10 h-10 mx-auto mb-1">
+              <p class="text-xs text-gray-600">GitHub</p>
+            </div>
+            
+            <div class="tool-icon-card p-2 text-center w-20">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg" alt="Docker Icon" class="w-10 h-10 mx-auto mb-1">
+              <p class="text-xs text-gray-600">Docker</p>
+            </div>
 
-          <div class="rounded-xl border border-slate-200 bg-white/90 p-4 shadow-sm">
-            <h3 class="flex items-center gap-2 text-sm font-semibold text-slate-900">
-              <span class="h-2 w-2 rounded-full bg-indigo-500"></span>
-              Education
-            </h3>
-            <p class="mt-2 text-xs text-slate-700">
-              B.S. Computer Science (Honors) at UMass Amherst  
-            <br> Secondary major in Russian.
-            </p>
-          </div>
+            <div class="tool-icon-card p-2 text-center w-20">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React Icon" class="w-10 h-10 mx-auto mb-1">
+              <p class="text-xs text-gray-600">React</p>
+            </div>
 
-          <div class="rounded-xl border border-slate-200 bg-white/90 p-4 shadow-sm">
-            <h3 class="flex items-center gap-2 text-sm font-semibold text-slate-900">
-              <span class="h-2 w-2 rounded-full bg-pink-500"></span>
-              Focus Areas
-            </h3>
-            <p class="mt-2 text-xs text-slate-700">
-              Backend Software Development, Time-Series Foundation Models, ML Infrastructure, API Development, Agentic Workflows, Automation.
-            </p>
+            <div class="tool-icon-card p-2 text-center w-20">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/1/10/PyTorch_logo_icon.svg" alt="PyTorch Icon" class="w-10 h-10 mx-auto mb-1">
+              <p class="text-xs text-gray-600">PyTorch</p>
+            </div>
+            
           </div>
         </div>
       </div>
     </section>
 
-    <!-- EXPERIENCE (BIG WHITE CARDS LIKE REFERENCE) -->
-    <section id="experience" class="mt-20 fade-in-element">
-      <p class="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-500 text-center">
+    <hr class="border-t border-gray-100 my-12" />
+
+    <section id="experience" class="fade-in-element pt-16 pb-16">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">
         My Previous Work
       </p>
-      <h2 class="mt-2 text-3xl font-bold text-slate-900 text-center">
+      <h2 class="text-3xl font-normal text-gray-900 text-center font-serif-display mb-10">
         Experiences
       </h2>
-      <p class="mt-3 text-sm text-slate-600 text-center max-w-2xl mx-auto">
-        Here you can see my work experiences showcasing some of my skills.
-      </p>
 
-      <div class="mt-10 space-y-8">
-        <!-- Philips -->
-        <article class="mx-auto max-w-5xl rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow">
-          <div class="px-8 py-8">
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-              <h3 class="text-lg font-semibold text-slate-900">
-                Software Development Engineer Co-op
-              </h3>
-              <span class="text-sm font-medium text-slate-500">
-                Jan. 2026 – TBD
-              </span>
+      <div class="space-y-12 mx-auto"> 
+        
+        <article class="p-8 border border-gray-200 rounded-xl shadow-lg bg-white">
+          <div class="flex items-start justify-between gap-6">
+            <div class="flex items-center gap-4">
+              <div class="h-10 w-10 flex items-center justify-center rounded-lg border border-gray-200 overflow-hidden bg-gray-100">
+                <img src="philips.jpeg" alt="Philips Logo" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <h3 class="text-xl font-medium text-gray-900 leading-snug">
+                  Software Development Engineer Co-op
+                </h3>
+                <a href="https://www.usa.philips.com/healthcare/patient-monitoring" target="_blank" class="text-sm text-gray-600 hover:text-black transition">Philips</a>
+              </div>
             </div>
-            <p class="mt-1 text-sm text-slate-600">
-              Philips
-            </p>
-            <ul class="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
-              <li>Incoming on the Software Development Team, where I will on infrastructure and software automation for the <span class="font-semibold text-indigo-600">Patient Monitoring Solution</span></li>
-            </ul>
+            <div class="text-right flex-shrink-0">
+              <p class="text-sm font-normal text-gray-500">Jan. 2026 – TBD</p>
+            </div>
           </div>
+          
+          <ul class="mt-6 list-disc space-y-2 pl-5 text-sm text-gray-700">
+            <li>Incoming on the Software Development Team, where I will develop software automatation for the Patient Monitoring Solution.</li>
+            </ul>
+           <a href="https://www.usa.philips.com/healthcare/patient-monitoring" target="_blank" class="mt-4 text-sm font-medium text-gray-600 hover:text-black block">
+             Visit Website →
+           </a>
         </article>
 
-        <!-- Research -->
-        <article class="mx-auto max-w-5xl rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow">
-          <div class="px-8 py-8">
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-              <h3 class="text-lg font-semibold text-slate-900">
-                Machine Learning Research Assistant
-              </h3>
-              <span class="text-sm font-medium text-slate-500">
-                Sep. 2025 – Current
-              </span>
+        <article class="p-8 border border-gray-200 rounded-xl shadow-lg bg-white">
+          <div class="flex items-start justify-between gap-6">
+            <div class="flex items-center gap-4">
+              <div class="h-10 w-10 flex items-center justify-center rounded-lg border border-gray-200 overflow-hidden bg-gray-100">
+                <img src="umass.jpeg" alt="UMass Logo" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <h3 class="text-xl font-medium text-gray-900 leading-snug">
+                  Machine Learning Research Assistant
+                </h3>
+                <a href="https://lass.cs.umass.edu/" target="_blank" class="text-sm text-gray-600 hover:text-black transition">Laboratory for Advanced System Software — UMass Amherst</a>
+              </div>
             </div>
-            <p class="mt-1 text-sm text-slate-600">
-              Laboratory for Advanced System Software — UMass Amherst
-            </p>
-            <ul class="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
-              <li>Developing a <span class="font-semibold text-indigo-600">Foundation Model Toolkit</span> with modular pipelines for zero-shot time-series classification, forecasting, and more.</li>
-              <li>Integrated sensor-reading datasets; achieved ~94%+ accuracy (MOMENT) and ~99% (Mantis + MLP decoder).</li>
-              <li>Designed APIs that let users train and evaluate powerful TSFMs in under 7 lines of code.</li>
-            </ul>
+            <div class="text-right flex-shrink-0">
+              <p class="text-sm font-normal text-gray-500">Sep. 2025 – Current</p>
+            </div>
           </div>
+          
+          <ul class="mt-6 list-disc space-y-2 pl-5 text-sm text-gray-700">
+            <li>Developing a specialized Time-Series Foundation Model Toolkit with modular pipelines designed for zero-shot classification & forecasting across time-series datasets.</li>
+            <li>Successfully integrated several complex sensor-reading datasets and achieved high accuracy benchmarks, including ~94%+ accuracy using MOMENT and superior results up to ~99% with a custom Mantis-based model combined with an MLP decoder.</li>
+            <li>Designed highly efficient, user-friendly APIs that significantly streamlined the workflow, enabling other users and researchers to train and evaluate powerful TSFMs using fewer than 7 lines of core Python code.</li>
+          </ul>
+           <a href="https://lass.cs.umass.edu/" target="_blank" class="mt-4 text-sm font-medium text-gray-600 hover:text-black block">
+             Visit Website →
+           </a>
         </article>
 
-        <!-- Forum Systems -->
-        <article class="mx-auto max-w-5xl rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow">
-          <div class="px-8 py-8">
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-              <h3 class="text-lg font-semibold text-slate-900">
-                Machine Learning Engineer Intern
-              </h3>
-              <span class="text-sm font-medium text-slate-500">
-                Jun. 2023 – Aug. 2023
-              </span>
+        <article class="p-8 border border-gray-200 rounded-xl shadow-lg bg-white">
+          <div class="flex items-start justify-between gap-6">
+            <div class="flex items-center gap-4">
+              <div class="h-10 w-10 flex items-center justify-center rounded-lg border border-gray-200 overflow-hidden bg-gray-100">
+                <img src="forum.jpeg" alt="Forum Systems Logo" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <h3 class="text-xl font-medium text-gray-900 leading-snug">
+                  Machine Learning Engineer Intern
+                </h3>
+                <a href="https://www.forumsys.com/securegpt-contractsgpt/" target="_blank" class="text-sm text-gray-600 hover:text-black transition">Forum Systems</a>
+              </div>
             </div>
-            <p class="mt-1 text-sm text-slate-600">
-              Forum Systems
-            </p>
-            <ul class="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
-              <li>Designed and deployed end-to-end NLP pipelines for the <span class="font-semibold text-indigo-600">SecureGPT Platform</span> &mdash; a private client contract obfuscation LLM service.</li>
-              <li>Used AWS Lambda, Docker, and LLM guardrails to keep sensitive data protected and compliant.</li>
-              <li>Worked across the Software Development team to ship features that were actively used by clients.</li>
-            </ul>
+            <div class="text-right flex-shrink-0">
+              <p class="text-sm font-normal text-gray-500">Jun. 2023 – Aug. 2023</p>
+            </div>
           </div>
+          
+          <ul class="mt-6 list-disc space-y-2 pl-5 text-sm text-gray-700">
+            <li>Responsible for designing and deploying robust, end-to-end Natural Language Processing pipelines that formed the backbone of the proprietary SecureGPT Platform, an LLM service dedicated to private client contract obfuscation.</li>
+            <li>Utilized AWS Lambda for serverless execution and Docker for containerization to ensure platform scalability, while integrating advanced LLM guardrails to maintain strict protection and compliance standards for sensitive data.</li>
+            <li>Collaborated extensively across the Software Development team to develop, test, and ship critical platform features that were immediately deployed and actively used by enterprise clients.</li>
+          </ul>
+           <a href="https://www.forumsys.com/securegpt-contractsgpt/" target="_blank" class="mt-4 text-sm font-medium text-gray-600 hover:text-black block">
+             Visit Website →
+           </a>
         </article>
       </div>
     </section>
 
-    <!-- PROJECTS -->
-    <section id="projects" class="mt-20 fade-in-element">
-      <p class="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-500">
+    <hr class="border-t border-gray-100 my-12" />
+
+    <section id="projects" class="fade-in-element pt-16 pb-16 max-w-4xl mx-auto">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">
         My Portfolio
       </p>
-      <h2 class="mt-2 text-3xl font-bold text-slate-900">
+      <h2 class="text-3xl font-normal text-gray-900 text-center font-serif-display mb-10">
         Projects
       </h2>
-      <p class="mt-3 text-sm text-slate-600">
-        A snapshot of what I’ve been building recently — research tooling, agentic simulations, and ML pipelines.
-      </p>
 
-      <div class="mt-8 grid gap-6 md:grid-cols-2">
-        <!-- FMTK -->
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-          <h3 class="text-xl font-semibold text-slate-900">
-            Time-Series Foundation Model Toolkit (FMTK)
-          </h3>
-          <p class="mt-1 text-xs text-slate-500">
-            PyTorch · NumPy · TSFM Backbones (Chronos, MOMENT, Papagei, Mantis)
-          </p>
-          <p class="mt-3 text-xs text-slate-700">
-            Contributed core components to FMTK, including dataset loaders and evaluation flows for FordA, Epilepsy, ECG5000, and more.  
-            Achieved ~94% accuracy on FordA with MOMENT, and ~99% on Epilepsy with a tuned MLP decoder on top of Mantis.  
-            All training & evaluation can be done in under 7 lines of code using the high-level API.
-          </p>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-5 mx-auto">
+        
+        <article class="border border-gray-200 p-6 rounded-xl shadow-sm hover:shadow-md transition flex flex-col justify-between h-full">
+          <div>
+            <h3 class="text-xl font-medium text-gray-900 mb-1">
+              Time-Series Foundation Model Toolkit (FMTK)
+            </h3>
+            <p class="text-xs text-gray-500 mb-3">
+              PyTorch · NumPy · TSFM Backbones
+            </p>
+            <p class="text-sm text-gray-700">
+              Contributed core components to FMTK, including dataset loaders and evaluation flows for FordA, Epilepsy, ECG5000, and more.
+            </p>
+          </div>
+          <a href="https://github.com/" target="_blank" class="mt-4 text-sm font-medium text-gray-600 hover:text-black block">
+            View Project →
+          </a>
         </article>
 
-        <!-- Crisis Engine Simulator -->
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-          <h3 class="text-xl font-semibold text-slate-900">
-            Crisis Engine Simulator
-          </h3>
-          <p class="mt-1 text-xs text-slate-500">
-            Agentic Workflows · PyTorch · TensorFlow · React · Docker
-          </p>
-          <p class="mt-3 text-xs text-slate-700">
-            AI-driven city simulation engine that models floods, police and EMS routing, traffic, and vulnerable regions.  
-            Uses agentic workflows so different “actors” (civilians, responders, infrastructure) can independently reason and act,  
-            with an interactive UI showing live metrics, maps, and what-if scenarios.
-          </p>
+        <article class="border border-gray-200 p-6 rounded-xl shadow-sm hover:shadow-md transition flex flex-col justify-between h-full">
+          <div>
+            <h3 class="text-xl font-medium text-gray-900 mb-1">
+              Evil Hangman (C)
+            </h3>
+            <p class="text-xs text-gray-500 mb-3">
+              C · AVL Trees · Data Structures
+            </p>
+            <p class="text-sm text-gray-700">
+              A C implementation of the Evil Hangman word game designed to keep the player guessing as long as possible. Uses an AVL tree to manage candidate word families.
+            </p>
+          </div>
+          <a href="https://github.com/" target="_blank" class="mt-4 text-sm font-medium text-gray-600 hover:text-black block">
+            View Project →
+          </a>
         </article>
 
-        <!-- AI Document Deobfuscator -->
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-          <h3 class="text-xl font-semibold text-slate-900">
-            AI Document Deobfuscator
-          </h3>
-          <p class="mt-1 text-xs text-slate-500">
-            PyTorch · LangChain · Guardrails · AWS Lambda · Docker
-          </p>
-          <p class="mt-3 text-xs text-slate-700">
-            Built a pipeline that takes noisy or partially obfuscated PDFs and reconstructs clean, structured outputs.  
-            Uses LLM reasoning plus Guardrails for validation, automated through AWS Lambda and containerized services.
-          </p>
+        <article class="border border-gray-200 p-6 rounded-xl shadow-sm hover:shadow-md transition flex flex-col justify-between h-full">
+          <div>
+            <h3 class="text-xl font-medium text-gray-900 mb-1">
+              Crisis Engine Simulator
+            </h3>
+            <p class="text-xs text-gray-500 mb-3">
+              Agentic Workflows · PyTorch · React · Docker
+            </p>
+            <p class="text-sm text-gray-700">
+              AI-driven city simulation engine that models floods, police and EMS routing, traffic, and vulnerable regions using agentic workflows.
+            </p>
+          </div>
+          <a href="https://github.com/" target="_blank" class="mt-4 text-sm font-medium text-gray-600 hover:text-black block">
+            View Project →
+          </a>
         </article>
 
-        <!-- Portfolio -->
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-          <h3 class="text-xl font-semibold text-slate-900">
-            This Portfolio
-          </h3>
-          <p class="mt-1 text-xs text-slate-500">
-            HTML · Tailwind CSS · Deployed on Vercel
-          </p>
-          <p class="mt-3 text-xs text-slate-700">
-            The site you're on right now — built to be clean, fast, and representative of how I like to structure and ship projects.
-          </p>
+        <article class="border border-gray-200 p-6 rounded-xl shadow-sm hover:shadow-md transition flex flex-col justify-between h-full">
+          <div>
+            <h3 class="text-xl font-medium text-gray-900 mb-1">
+              AI Document Deobfuscator
+            </h3>
+            <p class="text-xs text-gray-500 mb-3">
+              PyTorch · LangChain · Guardrails · AWS Lambda
+            </p>
+            <p class="text-sm text-gray-700">
+              Built a pipeline that takes noisy or partially obfuscated PDFs and reconstructs clean, structured outputs using LLM reasoning and Guardrails.
+            </p>
+          </div>
+          <a href="https://github.com/" target="_blank" class="mt-4 text-sm font-medium text-gray-600 hover:text-black block">
+            View Project →
+          </a>
         </article>
       </div>
     </section>
 
-    <!-- AI/ML SKILLS -->
-    <section id="AI/ML Skills" class="mt-20 fade-in-element">
-      <p class="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-500">
-        Tools I Use
-      </p>
-      <h2 class="mt-2 text-3xl font-bold text-slate-900">
-        AI/ML Skills & Libraries
-      </h2>
+    <hr class="border-t border-gray-100 my-12" />
 
-      <div class="mt-6 flex flex-wrap gap-3">
-        <!-- Tags -->
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Retrieval Augmented Generation (RAG)</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Fine-Tuning</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">LangChain</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Model Guardrails</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Linear Probing</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Zero-Shot Forcasting/Classification</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Low-Rank Adaption (LoRA) Adapters</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Prompt Engineering</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Time-Series Foundation Models</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Transformer-Based Architecture</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Transformer Decoder Dev.</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">AI Agentic Workflows</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Computer Vision</span>
-        <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Convolution Neural Networks</span>
-      </div>
-    </section>
-
-    <!-- GENERAL SKILLS -->
-    <section id="General Skills" class="mt-20 fade-in-element">
-      <h2 class="text-3xl font-bold text-slate-900 mb-4">
-        General Skills, Tools & Languages
-      </h2>
-      <div class="flex flex-wrap gap-3">
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">JavaScript</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">TypeScript</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">C</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">C#</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">C++</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Python</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Java</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Jest</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Criterion</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">JUnit</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">HTML</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">FastAPI</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">FetchAPI</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">React</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">GitHub</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Docker</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Azure</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">AWS Cloud Services</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Agile Dev</span>
-        <span class="bg-slate-50 text-slate-800 border border-slate-200 text-xs font-medium px-4 py-2 rounded-full shadow-sm">Visual Studio Code</span>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="mt-20 mb-16 fade-in-element">
-      <p class="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-500">
+    <section id="contact" class="fade-in-element pt-16 pb-16 max-w-4xl mx-auto">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 mb-3 text-center">
         Connect With Me
       </p>
-      <h2 class="mt-2 text-3xl font-bold text-slate-900">
+      <h2 class="text-3xl font-normal text-gray-900 text-center font-serif-display mb-10">
         Get In Touch
       </h2>
-      <p class="mt-3 text-sm text-slate-600 max-w-xl">
-        I'd love to hear from you. If you have any questions, want to chat about AI, systems, internship searching, or
-        just say hi — feel free to reach out.
-      </p>
+      
+      <div class="max-w-xl mx-auto space-y-6">
+        <p class="text-base text-gray-600 text-center">
+          I'd love to hear from you. Feel free to reach out to chat about AI, systems, or just say hi.
+        </p>
 
-      <div class="mt-6 grid gap-8 md:grid-cols-[1.5fr,1fr]">
-        <!-- Contact form (Formspree, styled + clears on submit) -->
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
           <form
             id="contact-form"
             action="https://formspree.io/f/mvgjqgpg"
             method="POST"
             class="space-y-4"
           >
-            <!-- Honeypot field -->
             <input type="text" name="_gotcha" style="display:none" />
 
             <div>
-              <label class="text-xs font-medium text-slate-800 block mb-1">
-                Your Name
-              </label>
+              <label class="text-xs font-medium text-gray-800 block mb-1">Your Name</label>
               <input
                 type="text"
                 name="name"
                 required
-                class="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:ring-1 focus:ring-black focus:outline-none transition"
                 placeholder="John Doe"
               />
             </div>
 
             <div>
-              <label class="text-xs font-medium text-slate-800 block mb-1">
-                Your Email
-              </label>
+              <label class="text-xs font-medium text-gray-800 block mb-1">Your Email</label>
               <input
                 type="email"
                 name="email"
                 required
-                class="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:ring-1 focus:ring-black focus:outline-none transition"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label class="text-xs font-medium text-slate-800 block mb-1">
-                Your Message
-              </label>
+              <label class="text-xs font-medium text-gray-800 block mb-1">Your Message</label>
               <textarea
                 name="message"
                 rows="4"
                 required
-                class="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none resize-none"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:ring-1 focus:ring-black focus:outline-none resize-none transition"
                 placeholder="Write your message here..."
               ></textarea>
             </div>
 
             <button
               type="submit"
-              class="inline-flex items-center justify-center rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 hover:shadow-lg transition"
+              class="inline-flex items-center justify-center rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white shadow-md hover:bg-gray-800 transition w-full"
             >
-              Send Message →
+              Send Message
             </button>
 
-            <p id="form-status" class="text-xs text-slate-600 mt-2"></p>
+            <p id="form-status" class="text-xs text-gray-600 mt-2 text-center"></p>
           </form>
         </div>
 
-        <!-- Direct contact info -->
-        <div class="space-y-4">
-          <div class="flex items-center gap-3">
-            <span class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-indigo-500 text-lg">
-              &#9993;
-            </span>
-            <div>
-              <p class="text-xs font-semibold text-slate-800">Email</p>
-              <a href="mailto:oboukantar@umass.edu" class="text-sm text-indigo-600 hover:underline">
-                oboukantar@umass.edu
-              </a>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <span class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-indigo-500 text-lg">
-              &#x1F4CD;
-            </span>
-            <div>
-              <p class="text-xs font-semibold text-slate-800">Location</p>
-              <p class="text-sm text-slate-700">Boston, Massachusetts</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <span class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-indigo-500 text-lg">
-              &#x1F517;
-            </span>
-            <div>
-              <p class="text-xs font-semibold text-slate-800">LinkedIn</p>
-              <a
-                href="https://www.linkedin.com/in/omar-boukantar-72a529380/"
-                target="_blank"
-                class="text-sm text-indigo-600 hover:underline"
-              >
-                linkedin.com/in/omar-boukantar-72a529380
-              </a>
-            </div>
-          </div>
+        <div class="flex flex-col items-center pt-4 space-y-2 text-sm text-gray-600">
+          <a href="mailto:oboukantar@umass.edu" class="hover:text-black transition">
+            Email: oboukantar@umass.edu
+          </a>
+          <a href="https://www.linkedin.com/in/omar-boukantar-72a529380/" target="_blank" class="hover:text-black transition">
+            LinkedIn
+          </a>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER -->
-  <footer class="border-t border-slate-200 bg-white/80 py-4 text-center text-xs text-slate-500">
+  <footer class="border-t border-gray-100 bg-white py-6 text-center text-xs text-gray-500">
     &copy; 2025 Omar Boukantar. All rights reserved.
   </footer>
 
-  <!-- JS: Fade-in on scroll + Formspree handling -->
   <script>
-    // Fade-in observer
+    // 1. GOOGLE TRANSLATE FUNCTIONS
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'de,ru', // German, Russian, etc.
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+
+    function toggleTranslateMenu() {
+      const menu = document.getElementById('translate-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      const event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    }
+
+    function translatePage(lang) {
+      toggleTranslateMenu(); // Hide menu immediately
+
+      if (lang === 'en') {
+        // Reloading page to clear the translation banner/cookie for a clean reset
+        document.cookie = 'googtrans=/en/en; expires=' + new Date(0).toUTCString();
+        window.location.reload();
+        return;
+      }
+
+      const select = document.querySelector('.goog-te-combo');
+      if (select) {
+        select.value = lang;
+        // Use jQuery for compatibility with Google's widget events
+        $(select).trigger('change'); 
+      } else {
+        // Fallback or initialization attempt if the select is not ready
+        console.warn("Google Translate select element not found. Retrying initialization.");
+      }
+    }
+    
+    // Load the Google Translate API script
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.head.appendChild(script);
+
+    // 2. FADE-IN ANIMATION JS
     const observer = new IntersectionObserver(
       (entries, obs) => {
         entries.forEach((entry) => {
@@ -522,11 +602,11 @@
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 } // Starts fade-in when 10% of the element is visible
     );
     document.querySelectorAll(".fade-in-element").forEach((el) => observer.observe(el));
 
-    // Formspree AJAX submit, clear fields + status message
+    // 3. Formspree AJAX submit, clear fields + status message
     const form = document.getElementById("contact-form");
     const statusEl = document.getElementById("form-status");
 
